@@ -1,25 +1,30 @@
 using System;
 using System.Runtime.InteropServices;
 using OpenTK;
+using System.Security;
+using System.Runtime.CompilerServices;
 
 namespace fastmath
 {
     public unsafe static class FastMath
     {
+        [SuppressUnmanagedCodeSecurity]
         [DllImport("libmath.dll", EntryPoint = "Mult4x4", CallingConvention = CallingConvention.Cdecl)]
         public static extern void NativeMult (
             [In] ref Matrix4 left,
             [In] ref Matrix4 right,
             [Out] out Matrix4 o);
 
-        public delegate void MatrixMultDlg (ref Matrix4 left, ref Matrix4 right, out Matrix4 o);
-
-        public static readonly MatrixMultDlg Mult;
+        [SuppressUnmanagedCodeSecurity]
+        [DllImport("libmath.dll", EntryPoint = "Mult4x4", CallingConvention = CallingConvention.Cdecl)]
+        public static extern void NativePtrMult (
+            Matrix4* left,
+            Matrix4* right,
+            Matrix4* o);
 
         static FastMath()
         {
-            Mult = NativeMult;
-            //Mult = Matrix4.Mult;
+
         }
 
         /*public static void Mult(ref Matrix4 left, ref Matrix4 right, ref Matrix4 o)

@@ -6,7 +6,7 @@ namespace fastmath
 {
     class MainClass
     {
-        public static void Main (string[] args)
+        public unsafe static void Main (string[] args)
         {
             var sw = new Stopwatch ();
 
@@ -15,6 +15,11 @@ namespace fastmath
             Matrix4 o = Matrix4.Zero;
 
             const int ITERATIONS = 10000000;
+
+            //Warm up
+            Matrix4.Mult (ref left, ref right, out o);
+            Matrix4.Mult (ref left, ref right, out o);
+            Matrix4.Mult (ref left, ref right, out o);
 
             sw.Start ();
             for (int i=0; i<ITERATIONS; ++i)
@@ -26,10 +31,28 @@ namespace fastmath
             sw.Reset ();
             Console.WriteLine (o);
 
+            //warm up
+            FastMath.NativeMult (ref left, ref right, out o);
+            FastMath.NativeMult (ref left, ref right, out o);
+            FastMath.NativeMult (ref left, ref right, out o);
+
             sw.Start ();
             for (int i=0; i<ITERATIONS; ++i)
             {
-                FastMath.Mult (ref left, ref right, out o);
+                FastMath.NativeMult (ref left, ref right, out o);
+            }
+            sw.Stop ();
+            Console.WriteLine ("Native mult: {0}ms", sw.ElapsedMilliseconds);
+            sw.Reset ();
+            Console.WriteLine (o);
+
+
+
+            sw.Start ();
+
+            for (int i=0; i<ITERATIONS; ++i)
+            {
+                FastMath.NativePtrMult (&left, &right, &o);
             }
             sw.Stop ();
             Console.WriteLine ("Native mult: {0}ms", sw.ElapsedMilliseconds);
