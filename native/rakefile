@@ -1,0 +1,52 @@
+require 'rake/clean'
+CLEAN.include("*.o")
+CLOBBER.include("build/")
+
+PLATFORM=ENV["PLATFORM"] || "linux64"
+TARGET = ENV["target"] || "build/"
+NAME = ENV["name"] || "libmath"
+
+case PLATFORM
+when "linux64"
+	CC="cc"
+	CFLAGS="-std=c11 -fPIC -Wall -Wextra -Werror -O3"
+	LDFLAGS="-shared"
+	SUFFIX = ".so"
+when "win32"
+	CC = "i686-w64-mingw32-gcc"
+	CFLAGS="-std=c1x -Wall -O3"
+	LDFLAGS="-shared"
+	SUFFIX=".dll"
+when "win64"
+	CC = "x86_64-w64-mingw32-gcc"
+	CFLAGS="-std=c1x -Wall -O3"
+	LDFLAGS="-shared"
+	SUFFIX=".dll"
+else
+end
+
+OUT = ENV["out"] || "#{TARGET}/#{NAME}#{SUFFIX}"
+
+#All sources and corresponding objects
+PATH = File.dirname(__FILE__)
+sources = Rake::FileList["#{PATH}/**/*.c"]
+objs = sources.ext(".o")
+
+desc "Build"
+task :build => :binary
+
+desc "Build binary"
+task :binary => :objects do
+	puts "Linking..."
+	mkdir_p TARGET
+	`#{CC} #{LDFLAGS} #{objs} -o #{OUT}`
+end
+
+desc "Build objects"
+task :objects => objs
+
+#Rule for making .o files
+rule ".o" => ".c" do |t|
+	puts "Building #{t.source}..."
+	`#{CC} #{CFLAGS} -c #{t.source} -o #{t.name}`
+end
