@@ -1,5 +1,7 @@
 # FastMath
 
+Uses (multiarch/crossbuild)[https://hub.docker.com/r/multiarch/crossbuild/] docker image to cross-compile. Also can use mingw to easily cross-compile to windows.
+
 ## Second-pass results
 
 Learned that `SuppressUnmanagedCodeSecurityAttribute` adds huge performance benefits on windows.
@@ -20,3 +22,8 @@ to use pointers added huge gains on windows.
 ### Windows (VM)
 440 ms windows .NET
 640 for c11
+
+### OSX (x86_64 VM w/ Mono 3.4 x86)
+
+600 ms for .NET
+300 ms for dylib (32 bit)
