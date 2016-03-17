@@ -1,4 +1,5 @@
 #include "fastmath.h"
+#include "matrix.h"
 
 API void Mult4x4(const float* restrict left, const float* restrict right, float* restrict out) {
 	/*
@@ -28,3 +29,15 @@ API void Mult4x4(const float* restrict left, const float* restrict right, float*
     out[15] = left[12] * right[3] + left[13] * right[7] + left[14] * right[11] + left[15] * right[15];
 }
 
+
+API void TransformPosition(Vec3* pos, Mat4* mat, Vec3* result) {
+    result->X = pos->X * mat->Rows.Row0.X + pos->Y * mat->Rows.Row1.X + pos->Z * mat->Rows.Row2.X + mat->Rows.Row3.X;
+    result->Y = pos->X * mat->Rows.Row0.Y + pos->Y * mat->Rows.Row1.Y + pos->Z * mat->Rows.Row2.Y + mat->Rows.Row3.Y;
+    result->Z = pos->X * mat->Rows.Row0.Z + pos->Y * mat->Rows.Row1.Z + pos->Z * mat->Rows.Row2.Z + mat->Rows.Row3.Z;
+}
+
+API void TransformVector(Vec3* vec, Mat4* mat, Vec3* result) {
+    result->X = vec->X * mat->Rows.Row0.X + vec->Y * mat->Rows.Row1.X + vec->Z * mat->Rows.Row2.X;
+    result->Y = vec->X * mat->Rows.Row0.Y + vec->Y * mat->Rows.Row1.Y + vec->Z * mat->Rows.Row2.Y;
+    result->Z = vec->X * mat->Rows.Row0.Z + vec->Y * mat->Rows.Row1.Z + vec->Z * mat->Rows.Row2.Z;
+}
