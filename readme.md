@@ -1,6 +1,6 @@
 # FastMath
 
-Uses (multiarch/crossbuild)[https://hub.docker.com/r/multiarch/crossbuild/] docker image to cross-compile. Also can use mingw to easily cross-compile to windows.
+Uses [multiarch/crossbuild](https://hub.docker.com/r/multiarch/crossbuild/) docker image to cross-compile. Also can use mingw to easily cross-compile to windows.
 
 ## Second-pass results
 
